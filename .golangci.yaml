@@ -1,0 +1,62 @@
+linters-settings:
+  gocyclo:
+    min-complexity: 15
+  dupl:
+    threshold: 100
+  goconst:
+    min-len: 2
+    min-occurrences: 2
+  gosec:
+    excludes:
+      - G404
+  goimports:
+    local-prefixes: github.com/stuckinforloop/fabrik
+  interfacebloat:
+    max: 5
+  iface:
+    enable:
+      - opaque
+      - identical
+
+linters:
+  disable-all: true
+  enable:
+    - errcheck # Check for unchecked errors
+    - gosimple # Check for code simplification
+    - govet # Vet examines Go source code and reports suspicious constructs
+    - ineffassign # Detects unused assignments
+    - staticcheck # State of the art Go linter
+    - typecheck # Like the front-end of a Go compiler
+    - unused # Check for unused constants, variables, functions and types
+    - gocyclo # Check cyclomatic complexity
+    - gosec # Inspects source code for security problems
+    - misspell # Find commonly misspelled English words
+    - gofmt # Check if code is properly formatted
+    - goimports # Check imports are properly organized
+    - revive # Fast, configurable, extensible, flexible, and beautiful linter
+    - interfacebloat # Check for interface bloat
+    - iface # Check for interface pollution
+
+run:
+  timeout: 5m
+  issues-exit-code: 1
+  tests: true
+  build-tags: []
+
+output:
+  formats:
+    - format: colored-line-number
+  print-issued-lines: true
+  print-linter-name: true
+
+issues:
+  exclude-rules:
+    - path: _test\.go
+      linters:
+        - gocyclo
+        - errcheck
+        - dupl
+        - gosec
+
+  max-issues-per-linter: 0
+  max-same-issues: 0

@@ -1,0 +1,10 @@
+# binaries
+fabrik
+
+# source creds
+/creds
+**/*.creds.yaml
+
+# coverage
+coverage.html
+coverage.out

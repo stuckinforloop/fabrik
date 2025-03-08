@@ -1,0 +1,20 @@
+name: fabrik
+services:
+  db:
+    image: timescale/timescaledb-ha:pg17
+    environment:
+      POSTGRES_USER: fabrik
+      POSTGRES_PASSWORD: fabrik
+      POSTGRES_DB: fabrik
+    ports:
+      - "5432:5432"
+    volumes:
+      - fabrik-data:/home/postgres/pgdata/data
+  vectorizer-worker:
+    image: timescale/pgai-vectorizer-worker:latest
+    environment:
+      PGAI_VECTORIZER_WORKER_DB_URL: postgres://fabrik:fabrik@db:5432/fabrik
+    command: [ "--poll-interval", "5s", "--log-level", "DEBUG" ]
+
+volumes:
+  fabrik-data:
