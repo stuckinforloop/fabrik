@@ -30,6 +30,7 @@ type Server struct {
 
 func New(port string) *Server {
 	env := os.Getenv("environment")
+	symKey := os.Getenv("sym_key")
 	logger := logger.New(env)
 
 	var nowFunc timeutils.TimeNow = func() time.Time {
@@ -55,8 +56,14 @@ func New(port string) *Server {
 		logger.Error("create hclient", zap.Error(err))
 	}
 
-	api := api.New(logger, hclient, db, idSource, nowFunc)
-
+	api := api.New(
+		symKey,
+		logger,
+		hclient,
+		db,
+		idSource,
+		nowFunc,
+	)
 	bundle.Import()
 
 	if port == "" {

@@ -17,6 +17,7 @@ import (
 )
 
 type SourceService struct {
+	symKey  string
 	db      *db.DB
 	HClient *hclient.Client
 	ID      *id.Source
@@ -25,6 +26,7 @@ type SourceService struct {
 }
 
 func NewSourceService(
+	symKey string,
 	db *db.DB,
 	hclient *hclient.Client,
 	id *id.Source,
@@ -32,6 +34,7 @@ func NewSourceService(
 	nowFunc timeutils.TimeNow,
 ) *SourceService {
 	return &SourceService{
+		symKey:  symKey,
 		db:      db,
 		HClient: hclient,
 		ID:      id,
@@ -61,7 +64,7 @@ func (s *SourceService) CreateSource(ctx context.Context, config *Config) error 
 
 	query := `
 		INSERT INTO sources (id, name, kind, config, credentials, sync_frequency, created_at, updated_at)
-		VALUES ($1, $2, $3, $4, pgp_sym_encrypt_bytea($5, 'fabrik'), $6, $7, $8)
+		VALUES ($1, $2, $3, $4, pgp_sym_encrypt_bytea($5, $6), $7, $8, $9)
 	`
 
 	if err := s.db.RW().Exec(ctx, query,
@@ -70,6 +73,7 @@ func (s *SourceService) CreateSource(ctx context.Context, config *Config) error 
 		config.Kind,
 		config.Config,
 		creds,
+		s.symKey,
 		config.SyncFrequency,
 		config.CreatedAt,
 		config.UpdatedAt,
@@ -87,12 +91,12 @@ func (s *SourceService) GetSource(ctx context.Context, id string, kind Kind) (*C
 	var syncFrequency time.Duration
 
 	query := `
-		SELECT id, name, kind, config, pgp_sym_decrypt_bytea(credentials, 'fabrik'), sync_frequency, created_at, updated_at
+		SELECT id, name, kind, config, pgp_sym_decrypt_bytea(credentials, $1), sync_frequency, created_at, updated_at
 		FROM sources
-		WHERE id = $1
-		AND kind = $2
+		WHERE id = $2
+		AND kind = $3
 	`
-	if err := s.db.RW().QueryRow(ctx, query, id, kind).Scan(
+	if err := s.db.RW().QueryRow(ctx, query, s.symKey, id, kind).Scan(
 		&config.ID,
 		&config.Name,
 		&config.Kind,

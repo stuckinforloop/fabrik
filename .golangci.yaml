@@ -17,6 +17,10 @@ linters-settings:
     enable:
       - opaque
       - identical
+  revive:
+    rules:
+      - name: blank-imports
+        disabled: true
 
 linters:
   disable-all: true

@@ -53,7 +53,7 @@ func (a *API) WithSourceService() func(next http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		fn := func(w http.ResponseWriter, r *http.Request) {
 			ctx := r.Context()
-			srv := sources.NewSourceService(a.db, a.hclient, a.id, a.logger, a.nowFunc)
+			srv := sources.NewSourceService(a.symKey, a.db, a.hclient, a.id, a.logger, a.nowFunc)
 			ctx = context.WithValue(ctx, ContextKeySourceService, srv)
 			next.ServeHTTP(w, r.WithContext(ctx))
 		}

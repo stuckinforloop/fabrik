@@ -12,6 +12,7 @@ import (
 
 type API struct {
 	mux     *chi.Mux
+	symKey  string
 	logger  *zap.Logger
 	hclient *hclient.Client
 	db      *db.DB
@@ -19,10 +20,18 @@ type API struct {
 	nowFunc timeutils.TimeNow
 }
 
-func New(logger *zap.Logger, hclient *hclient.Client, db *db.DB, id *id.Source, nowFunc timeutils.TimeNow) *API {
+func New(
+	symKey string,
+	logger *zap.Logger,
+	hclient *hclient.Client,
+	db *db.DB,
+	id *id.Source,
+	nowFunc timeutils.TimeNow,
+) *API {
 	mux := chi.NewMux()
 	return &API{
 		mux:     mux,
+		symKey:  symKey,
 		logger:  logger,
 		hclient: hclient,
 		db:      db,

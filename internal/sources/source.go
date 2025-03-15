@@ -6,17 +6,17 @@ import (
 
 // Config represents a source configuration.
 type Config struct {
-	ID            string         `json:"id"`
-	Name          string         `json:"name"`
-	Kind          Kind           `json:"kind"`
-	Config        map[string]any `json:"config"`
-	Credentials   map[string]any `json:"credentials"`
-	Status        Status         `json:"status"`
-	SyncFrequency string         `json:"sync_frequency"`
-	CreatedAt     time.Time      `json:"created_at"`
-	UpdatedAt     time.Time      `json:"updated_at"`
-	SyncedAt      *time.Time     `json:"synced_at"`
-	DeletedAt     *time.Time     `json:"deleted_at"`
+	ID            string         `json:"id" mapstructure:"id"`
+	Name          string         `json:"name" mapstructure:"name"`
+	Kind          Kind           `json:"kind" mapstructure:"kind"`
+	Config        map[string]any `json:"config" mapstructure:"config"`
+	Credentials   map[string]any `json:"credentials" mapstructure:"credentials"`
+	Status        Status         `json:"status" mapstructure:"status"`
+	SyncFrequency string         `json:"sync_frequency" mapstructure:"sync_frequency"`
+	CreatedAt     time.Time      `json:"created_at" mapstructure:"created_at"`
+	UpdatedAt     time.Time      `json:"updated_at" mapstructure:"updated_at"`
+	SyncedAt      *time.Time     `json:"synced_at" mapstructure:"synced_at"`
+	DeletedAt     *time.Time     `json:"deleted_at" mapstructure:"deleted_at"`
 }
 
 // Status represents the status of a source.
