@@ -11,13 +11,13 @@ import (
 
 	"go.uber.org/zap"
 
+	"github.com/stuckinforloop/fabrik/api"
 	"github.com/stuckinforloop/fabrik/db"
 	"github.com/stuckinforloop/fabrik/deps/hclient"
 	"github.com/stuckinforloop/fabrik/deps/id"
 	"github.com/stuckinforloop/fabrik/deps/logger"
 	"github.com/stuckinforloop/fabrik/deps/timeutils"
 	"github.com/stuckinforloop/fabrik/internal/sources/bundle"
-	"github.com/stuckinforloop/fabrik/server/api"
 )
 
 type Server struct {
